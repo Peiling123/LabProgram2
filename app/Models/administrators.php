@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Admins extends Authenticatable implements JWTSubject
+class administrators extends Authenticatable implements JWTSubject
 {
 
     use HasFactory;
@@ -46,7 +46,7 @@ class Admins extends Authenticatable implements JWTSubject
     public static function YyhcheckNumber($account)
     {
         try {
-            $count = Admins::select('account')
+            $count = administrators::select('account')
                 ->where('account', $account)
                 ->count();
             return $count;
@@ -57,7 +57,7 @@ class Admins extends Authenticatable implements JWTSubject
     public static function YyhcreateUser($registeredInfo)
     {
         try {
-            $student_id = Admins::create([
+            $student_id = administrators::create([
                 'account' => $registeredInfo['account'],
                 'password' => $registeredInfo['password'],
                 'judge'=>$registeredInfo['judge']
