@@ -2,15 +2,29 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
 use Illuminate\Foundation\Auth\User as Authenticatable;//引用Authenticatable类使得DemoModel具有用户认证功能
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 
 class science_star_registrations extends Authenticatable implements JWTSubject
-{//
+{
+    // 定义可以批量赋值的字段
+    protected $fillable = [
+        'id',
+        'student_id',
+        'grade',
+        'major',
+        'class',
+        'name',
+        'project_category',
+        'project_name',
+        'approval_time',
+        'status',
+        'certificate',
+        'rejection_reason'
     protected $table = "science_star_registrations";
     public $timestamps = true;
     protected $primaryKey = "id";
@@ -172,34 +186,39 @@ class science_star_registrations extends Authenticatable implements JWTSubject
             return 'error' . $e->getMessage();
         }
     }
-}
-
-
-=======
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class science_star_registrations extends Model
-{
-    use HasFactory;
-
-    // 定义表名
+      /*关联表*/
     protected $table = 'science_star_registrations';
-
-    // 定义可以批量赋值的字段
-    protected $fillable = [
-        'id',
-        'student_id',
-        'grade',
-        'major',
-        'class',
-        'name',
-        'project_category',
-        'project_name',
-        'approval_time',
-        'status',
-        'certificate',
-        'rejection_reason'
-    ];
+    public $timestamps = false;
+  
+    public function administrators()
+    {
+        return $this->belongsTo(students::class, 'student_id', 'id');
+    }
+     public  static function xiugai($data)//修改学生信息
+    {
+            try {
+                $dat = DB::table('science_star_registrations')
+                    ->update([
+                        'grade' =>$data['grade'],
+                        'major'=>$data['major'],
+                        'class'=>$data['class'],
+                        'name' =>$data['name'],
+                        'project_category'=>$data['project_category'],
+                        'project_name'=>$data['Project_name'],
+                        'approval_time'=>now(),
+                        'certificate'=>$data['certificate'],
+                        'rejection_reason'=>'0',
+                        'status'=>'0',
+                        'total_people'=>'0',
+                        'ranking'=>'0',
+                        'updated_at'=>now(),
+                    ]);
+                return $dat;
+            } catch (Exception $e) {
+                return 'error' . $e->getMessage();
+            }
+        }
 }
->>>>>>> 0015bfb2bb49bf44b98d4527abea4ffd161c1eaf
+
+
+
